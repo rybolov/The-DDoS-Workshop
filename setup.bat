@@ -1,6 +1,24 @@
 @echo off
 setlocal
 
+@echo off
+vagrant --version >nul 2>&1
+IF %ERRORLEVEL% EQU 0 (
+    echo Vagrant is installed.
+) ELSE (
+    echo Vagrant is NOT installed.
+    goto end
+)
+
+REM Check if VirtualBox is installed
+echo Checking for VirtualBox...
+VBoxManage --version >nul 2>&1
+IF %ERRORLEVEL% NEQ 0 (
+    echo VirtualBox is NOT installed or not in PATH.
+    goto end
+)
+echo VirtualBox is installed.
+
 REM Install the vagrant-vbguest plugin
 echo Installing vagrant-vbguest plugin...
 vagrant plugin install vagrant-vbguest
