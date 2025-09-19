@@ -16,7 +16,7 @@ sudo apt-get dist-upgrade -y
 sudo apt autoremove
 
 # Install packages
-sudo apt-get DEBIAN_FRONTEND=noninteractive install siege wget curl tcpdump fping nmap -y
+sudo DEBIAN_FRONTEND=noninteractive apt-get install siege wget curl tcpdump fping nmap -y
 
 sudo echo "---
 network:
@@ -30,5 +30,9 @@ for i in {4..254}; do
   echo "      - 192.168.56.$i/24" >> /etc/netplan/50-vagrant.yaml
 done
 sudo netplan apply
+
+echo "#!/bin/bash
+siege -c50 -t 120S -u http://192.168.56.2/" > /bin/ddos-siege-2min
+
 
 echo "Post-install script finished."
