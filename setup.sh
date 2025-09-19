@@ -26,16 +26,13 @@ fi
 
 # Start the DDoSAttacker VM
 echo "Starting DDoSAttacker VM..."
-cd VirtualMachines/DDoSAttacker || { echo "Directory not found: DDoSAttacker"; exit 1; }
-if ! vagrant up; then
+if ! (cd VirtualMachines/DDoSAttacker && vagrant up) ; then
     echo "Failed to start DDoSAttacker VM."
     exit 1
 fi
 
-# Start the DDoSTarget VM
 echo "Starting DDoSTarget VM..."
-cd ../DDoSTarget || { echo "Directory not found: DDoSTarget"; exit 1; }
-if ! vagrant up; then
+if ! (cd VirtualMachines/DDoSTarget && vagrant up) ; then
     echo "Failed to start DDoSTarget VM."
     exit 1
 fi
