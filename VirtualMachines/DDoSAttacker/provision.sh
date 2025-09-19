@@ -18,6 +18,17 @@ sudo apt autoremove
 # Install packages
 sudo apt-get DEBIAN_FRONTEND=noninteractive install siege wget curl tcpdump fping nmap -y
 
-echo
+sudo echo "---
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eth1:
+      addresses:
+      - 192.168.56.3/24"> /etc/netplan/50-vagrant.yaml
+for i in {4..254}; do
+  echo "      - 192.168.56.$i/24" >> /etc/netplan/50-vagrant.yaml
+done
+sudo netplan apply
 
 echo "Post-install script finished."
