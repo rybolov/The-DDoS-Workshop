@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+current_dir=$(pwd)
 LOGFILE="../install.log"
 INSTALL_STATUS="SUCCESS"
 
@@ -42,7 +43,7 @@ if ! command -v VBoxManage &> /dev/null; then
 fi
 log "VirtualBox is installed."
 
-# Install the vagrant-vbguest plugin
+## Install the vagrant-vbguest plugin
 log "Installing vagrant-vbguest plugin..."
 if vagrant plugin install vagrant-vbguest >> "$LOGFILE" 2>&1; then
     log "vagrant-vbguest plugin installed successfully."
@@ -55,12 +56,12 @@ fi
 
 # Check and start DDoSAttacker VM
 log "Checking status of DDoSAttacker VM..."
-cd VirtualMachines/DDoSAttacker || { log "Directory not found: DDoSAttacker"; INSTALL_STATUS="FAILED"; echo "Installation Status: $INSTALL_STATUS"; exit 1; }
+cd $current_dir/VirtualMachines/DDoSAttacker || { log "Directory not found: DDoSAttacker"; INSTALL_STATUS="FAILED"; echo "Installation Status: $INSTALL_STATUS"; exit 1; }
 VM_STATUS=$(vagrant status --machine-readable | grep ",state," | cut -d',' -f4)
 log "DDoSAttacker VM status: $VM_STATUS"
 if [ "$VM_STATUS" != "running" ]; then
     log "Starting DDoSAttacker VM..."
-    if vagrant up >> "$LOGFILE" 2>&1; then
+    if (vagrant up >> "$LOGFILE" 2>&1 && vagrant upload AttackScripts /home/vagrant/bin >> "$LOGFILE" 2>&1;) then
         log "DDoSAttacker VM started successfully."
     else
         log "Failed to start DDoSAttacker VM."
@@ -74,12 +75,12 @@ fi
 
 # Check and start DDoSTarget VM
 log "Checking status of DDoSTarget VM..."
-cd ../DDoSTarget || { log "Directory not found: DDoSTarget"; INSTALL_STATUS="FAILED"; echo "Installation Status: $INSTALL_STATUS"; exit 1; }
+cd $current_dir/VirtualMachines/DDoSTarget || { log "Directory not found: DDoSTarget"; INSTALL_STATUS="FAILED"; echo "Installation Status: $INSTALL_STATUS"; exit 1; }
 VM_STATUS=$(vagrant status --machine-readable | grep ",state," | cut -d',' -f4)
 log "DDoSTarget VM status: $VM_STATUS"
 if [ "$VM_STATUS" != "running" ]; then
     log "Starting DDoSTarget VM..."
-    if vagrant up >> "$LOGFILE" 2>&1; then
+    if (vagrant up >> "$LOGFILE" 2>&1;) then
         log "DDoSTarget VM started successfully."
     else
         log "Failed to start DDoSTarget VM."
