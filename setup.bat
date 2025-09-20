@@ -39,7 +39,7 @@ IF %ERRORLEVEL% NEQ 0 (
 REM Start the DDoSTarget VM
 echo Starting DDoSTarget VM...
 cd ..\DDoSTarget
-vagrant up
+vagrant up && vagrant upload "../../PCAP-Samples" /home/vagrant/PCAP-Samples
 IF %ERRORLEVEL% NEQ 0 (
     echo Failed to start DDoSTarget VM.
     goto end
