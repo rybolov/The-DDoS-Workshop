@@ -30,7 +30,7 @@ IF %ERRORLEVEL% NEQ 0 (
 REM Start the DDoSAttacker VM
 echo Starting DDoSAttacker VM...
 cd VirtualMachines\DDoSAttacker
-vagrant up
+vagrant up && vagrant upload AttackScripts /home/vagrant/bin
 IF %ERRORLEVEL% NEQ 0 (
     echo Failed to start DDoSAttacker VM.
     goto end
