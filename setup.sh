@@ -43,7 +43,7 @@ if ! command -v VBoxManage &> /dev/null; then
 fi
 log "VirtualBox is installed."
 
-## Install the vagrant-vbguest plugin
+# Install the vagrant-vbguest plugin
 log "Installing vagrant-vbguest plugin..."
 if vagrant plugin install vagrant-vbguest 2>&1 | tee -a "$LOGFILE" ; then
     log "vagrant-vbguest plugin installed successfully."
@@ -56,12 +56,12 @@ fi
 
 # Check and start DDoSAttacker VM
 log "Checking status of DDoSAttacker VM..."
-cd $current_dir/VirtualMachines/DDoSAttacker || { log "Directory not found: DDoSAttacker"; INSTALL_STATUS="FAILED"; echo "Installation Status: $INSTALL_STATUS"; exit 1; }
+cd "$current_dir/VirtualMachines/DDoSAttacker" || { log "Directory not found: DDoSAttacker"; INSTALL_STATUS="FAILED"; echo "Installation Status: $INSTALL_STATUS"; exit 1; }
 VM_STATUS=$(vagrant status --machine-readable | grep ",state," | cut -d',' -f4)
 log "DDoSAttacker VM status: $VM_STATUS"
 if [ "$VM_STATUS" != "running" ]; then
     log "Starting DDoSAttacker VM..."
-    if (vagrant up 2>&1 | tee -a "$LOGFILE" && vagrant upload AttackScripts /home/vagrant/bin 2>&1 | tee -a "$LOGFILE" ;) then
+    if ( (vagrant up 2>&1 | tee -a "$LOGFILE") && (vagrant upload AttackScripts /home/vagrant/bin 2>&1 | tee -a "$LOGFILE"); ) then
         log "DDoSAttacker VM started successfully."
     else
         log "Failed to start DDoSAttacker VM."
@@ -75,12 +75,12 @@ fi
 
 # Check and start DDoSTarget VM
 log "Checking status of DDoSTarget VM..."
-cd $current_dir/VirtualMachines/DDoSTarget || { log "Directory not found: DDoSTarget"; INSTALL_STATUS="FAILED"; echo "Installation Status: $INSTALL_STATUS"; exit 1; }
+cd "$current_dir/VirtualMachines/DDoSTarget" || { log "Directory not found: DDoSTarget"; INSTALL_STATUS="FAILED"; echo "Installation Status: $INSTALL_STATUS"; exit 1; }
 VM_STATUS=$(vagrant status --machine-readable | grep ",state," | cut -d',' -f4)
 log "DDoSTarget VM status: $VM_STATUS"
 if [ "$VM_STATUS" != "running" ]; then
     log "Starting DDoSTarget VM..."
-    if (vagrant up 2>&1 | tee -a "$LOGFILE" ;) then
+    if ( (vagrant up 2>&1 | tee -a "$LOGFILE") && (vagrant upload "$current_dir/PCAP-Samples" /home/vagrant/PCAP-Samples 2>&1 | tee -a "$LOGFILE");) then
         log "DDoSTarget VM started successfully."
     else
         log "Failed to start DDoSTarget VM."
