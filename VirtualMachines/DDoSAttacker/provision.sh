@@ -31,8 +31,6 @@ for i in {4..254}; do
 done
 sudo netplan apply
 
-echo "#!/bin/bash
-siege -c50 -t 120S -u http://192.168.56.2/" > /bin/ddos-siege-2min
-
+sudo echo "192.168.56.2 target" > /etc/hosts
 
 echo "Post-install script finished."

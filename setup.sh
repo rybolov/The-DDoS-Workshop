@@ -45,7 +45,7 @@ log "VirtualBox is installed."
 
 ## Install the vagrant-vbguest plugin
 log "Installing vagrant-vbguest plugin..."
-if vagrant plugin install vagrant-vbguest >> "$LOGFILE" 2>&1; then
+if vagrant plugin install vagrant-vbguest 2>&1 | tee -a "$LOGFILE" ; then
     log "vagrant-vbguest plugin installed successfully."
 else
     log "Failed to install vagrant-vbguest plugin."
@@ -61,7 +61,7 @@ VM_STATUS=$(vagrant status --machine-readable | grep ",state," | cut -d',' -f4)
 log "DDoSAttacker VM status: $VM_STATUS"
 if [ "$VM_STATUS" != "running" ]; then
     log "Starting DDoSAttacker VM..."
-    if (vagrant up >> "$LOGFILE" 2>&1 && vagrant upload AttackScripts /home/vagrant/bin >> "$LOGFILE" 2>&1;) then
+    if (vagrant up 2>&1 | tee -a "$LOGFILE" && vagrant upload AttackScripts /home/vagrant/bin 2>&1 | tee -a "$LOGFILE" ;) then
         log "DDoSAttacker VM started successfully."
     else
         log "Failed to start DDoSAttacker VM."
@@ -80,7 +80,7 @@ VM_STATUS=$(vagrant status --machine-readable | grep ",state," | cut -d',' -f4)
 log "DDoSTarget VM status: $VM_STATUS"
 if [ "$VM_STATUS" != "running" ]; then
     log "Starting DDoSTarget VM..."
-    if (vagrant up >> "$LOGFILE" 2>&1;) then
+    if (vagrant up 2>&1 | tee -a "$LOGFILE" ;) then
         log "DDoSTarget VM started successfully."
     else
         log "Failed to start DDoSTarget VM."
