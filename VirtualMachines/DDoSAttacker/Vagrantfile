@@ -7,6 +7,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.provider "virtualbox" do |vb|
     vb.name = "DDoS Attacker"
+    config.vm.boot_timeout = 1200
     # Set memory to 2GB (2048 MB)
     vb.memory = 2048
     # Set number of CPUs to 2
