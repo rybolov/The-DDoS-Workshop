@@ -14,10 +14,15 @@ sudo apt-get dist-upgrade -y
 sudo apt autoremove
 
 # Install packages.
-sudo DEBIAN_FRONTEND=noninteractive apt install gdm3 ubuntu-desktop apache2 nmap wireshark -y
+sudo DEBIAN_FRONTEND=noninteractive apt -y install apache2 nmap tshark iptraf gdm3
+echo "wireshark-common wireshark-common/install-setuid boolean true" | sudo debconf-set-selections
+# sudo DEBIAN_FRONTEND=noninteractive apt -y install gdm3 ubuntu-desktop apache2 nmap tshark wireshark slowloris iptraf
+#sudo DEBIAN_FRONTEND=noninteractive apt -y install gdm3 gnome-session apache2 nmap tshark wireshark iptraf gnome-terminal
+sudo DEBIAN_FRONTEND=noninteractive apt -y install --no-install-recommends wireshark gnome-terminal ubuntu-desktop-minimal
+sudo usermod -a -G wireshark vagrant
 
-# Create a simple index.html file
-echo "<h1>Hello from Ubuntu 25.04!</h1>" | sudo tee /var/www/html/index.html
+# Make this directory writeable so that we can upload content to it.
+sudo chmod -R 777 /var/www/html
 
 /etc/init.d/gdm3 restart
 

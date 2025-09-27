@@ -80,7 +80,7 @@ VM_STATUS=$(vagrant status --machine-readable | grep ",state," | cut -d',' -f4)
 log "DDoSTarget VM status: $VM_STATUS"
 if [ "$VM_STATUS" != "running" ]; then
     log "Starting DDoSTarget VM..."
-    if ( (vagrant up 2>&1 | tee -a "$LOGFILE") && (vagrant upload "$current_dir/PCAP-Samples" /home/vagrant/PCAP-Samples 2>&1 | tee -a "$LOGFILE");) then
+    if ( vagrant up 2>&1 | tee -a "$LOGFILE"; ) then
         log "DDoSTarget VM started successfully."
     else
         log "Failed to start DDoSTarget VM."
@@ -91,6 +91,29 @@ if [ "$VM_STATUS" != "running" ]; then
 else
     log "DDoSTarget VM is already running."
 fi
+
+# Uploading PCAP Samples to DDoSTarget VM
+cd "$current_dir/VirtualMachines/DDoSTarget" || { log "Directory not found: DDoSTarget"; INSTALL_STATUS="FAILED"; echo "Installation Status: $INSTALL_STATUS"; exit 1; }
+if ( (vagrant upload "$current_dir/PCAP-Samples" /home/vagrant/PCAP-Samples 2>&1 | tee -a "$LOGFILE") && (vagrant upload "$current_dir/VirtualMachines/DDoSTarget/web/html" /home/vagrant/PCAP-Samples 2>&1 | tee -a "$LOGFILE"); ) then
+  log "DDoSTarget uploaded PCAP samples successfully."
+else
+  log "Failed upload PCAP Samples."
+  INSTALL_STATUS="FAILED"
+  echo "Installation Status: $INSTALL_STATUS"
+  exit 1
+fi
+
+# Uploading web content to DDoSTarget VM
+cd "$current_dir/VirtualMachines/DDoSTarget" || { log "Directory not found: DDoSTarget"; INSTALL_STATUS="FAILED"; echo "Installation Status: $INSTALL_STATUS"; exit 1; }
+if ( (vagrant upload "$current_dir/VirtualMachines/DDoSTarget/webcontent" /var/www/html/ 2>&1 | tee -a "$LOGFILE"); ) then
+  log "DDoSTarget uploaded web content successfully."
+else
+  log "Failed upload web content."
+  INSTALL_STATUS="FAILED"
+  echo "Installation Status: $INSTALL_STATUS"
+  exit 1
+fi
+
 
 log "==== Installation Complete ===="
 echo "Installation Status: $INSTALL_STATUS"

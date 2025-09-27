@@ -16,7 +16,7 @@ sudo apt-get dist-upgrade -y
 sudo apt autoremove
 
 # Install packages
-sudo DEBIAN_FRONTEND=noninteractive apt-get install siege wget curl tcpdump fping nmap -y
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install siege wget curl tcpdump fping nmap slowloris
 
 echo "---
 network:
