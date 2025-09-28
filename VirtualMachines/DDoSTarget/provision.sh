@@ -25,6 +25,8 @@ sudo usermod -a -G wireshark vagrant
 sudo chmod -R 777 /var/www/html
 sudo cp /vagrant/webcontent/*.html /var/www/html/
 
+echo "192.168.56.3 attack" | sudo tee -a /etc/hosts
+
 /etc/init.d/gdm3 restart
 
 echo "Post-install script finished."
