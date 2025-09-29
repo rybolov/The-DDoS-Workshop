@@ -21,6 +21,9 @@ sudo usermod -a -G wireshark vagrant
 
 # Make this directory writeable so that we can upload content to it.
 sudo chmod -R 777 /var/www/html
+sudo cp /vagrant/webcontent/*.html /var/www/html/
+
+echo "192.168.56.3 attack" | sudo tee -a /etc/hosts
 
 /etc/init.d/gdm3 restart
 
