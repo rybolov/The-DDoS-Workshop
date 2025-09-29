@@ -16,8 +16,6 @@ sudo apt autoremove
 # Install packages.
 sudo DEBIAN_FRONTEND=noninteractive apt -y install apache2 nmap tshark iptraf gdm3
 echo "wireshark-common wireshark-common/install-setuid boolean true" | sudo debconf-set-selections
-# sudo DEBIAN_FRONTEND=noninteractive apt -y install gdm3 ubuntu-desktop apache2 nmap tshark wireshark slowloris iptraf
-#sudo DEBIAN_FRONTEND=noninteractive apt -y install gdm3 gnome-session apache2 nmap tshark wireshark iptraf gnome-terminal
 sudo DEBIAN_FRONTEND=noninteractive apt -y install --no-install-recommends wireshark gnome-terminal ubuntu-desktop-minimal
 sudo usermod -a -G wireshark vagrant
 
