@@ -10,7 +10,7 @@ echo "root:ddos" | chpasswd
 echo "vagrant:ddos" | chpasswd
 
 
-# Update the system
+# Update the system packages
 sudo apt-get update
 sudo apt-get dist-upgrade -y
 sudo apt autoremove
@@ -18,6 +18,7 @@ sudo apt autoremove
 # Install packages
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install siege wget curl tcpdump fping nmap slowloris
 
+# Set up a ton of IP addresses on virtual interfaces
 echo "---
 network:
   version: 2
@@ -32,5 +33,38 @@ done
 sudo netplan apply
 
 echo "192.168.56.2 target" | sudo tee -a /etc/hosts
+
+#Add a job to cron to make normal traffic
+# Cron expression
+cron="* * * * * /bin/bash /home"
+    # │ │ │ │ │
+    # │ │ │ │ │
+    # │ │ │ │ └───── day of week (0 - 6) (0 to 6 are Sunday to Saturday, or use names; 7 is Sunday, the same as 0)
+    # │ │ │ └────────── month (1 - 12)
+    # │ │ └─────────────── day of month (1 - 31)
+    # │ └──────────────────── hour (0 - 23)
+    # └───────────────────────── min (0 - 59)
+
+# Escape all the asterisks so we can grep for it
+cron_escaped=$(echo "$cron" | sed s/\*/\\\\*/g)
+
+# Check if cron job already in crontab
+crontab -l | grep "${cron_escaped}"
+if [[ $? -eq 0 ]] ;
+  then
+    echo "Crontab already exists. Exiting..."
+    exit
+  else
+    # Write out current crontab into temp file
+    crontab -l > mycron
+    # Append new cron into cron file
+    echo "$cron" >> mycron
+    # Install new cron file
+    crontab mycron
+    # Remove temp file
+    rm mycron
+fi
+
+
 
 echo "Post-install script finished."

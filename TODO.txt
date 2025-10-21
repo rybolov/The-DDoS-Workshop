@@ -1,0 +1,11 @@
+TODO.txt: things we gotta fix
+
+
+Merge additions in setup.sh to setup.bat: Schneider
+Test new setup.bat: Schneider
+Add more attack shell scripts: Smith
+Add "normal" traffic generator: Smith
+Add PCAP samples: Smith
+
+
+

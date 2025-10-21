@@ -22,8 +22,8 @@ Vagrant.configure("2") do |config|
   # Optional: Define a private network IP
   config.vm.network "private_network", ip: "192.168.56.3"
 
-  # Forward port 80 (guest) to port 8080 (host)
-  config.vm.network "forwarded_port", guest: 22, host: 2200
+  # Forward ports via the NAT network (10.0.x.x)
+  config.vm.network "forwarded_port", guest: 22, host: 22200
 
   # Provision the guest machine with a shell script
   config.vm.provision "shell", path: "provision.sh"
