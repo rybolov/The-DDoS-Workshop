@@ -54,7 +54,7 @@ else
     exit 1
 fi
 
-# Check and start DDoSAttacker VM
+# Check and start DDoSAttacker VM and upload attack scripts
 log "Checking status of DDoSAttacker VM..."
 cd "$current_dir/VirtualMachines/DDoSAttacker" || { log "Directory not found: DDoSAttacker"; INSTALL_STATUS="FAILED"; echo "Installation Status: $INSTALL_STATUS"; exit 1; }
 VM_STATUS=$(vagrant status --machine-readable | grep ",state," | cut -d',' -f4)
@@ -95,7 +95,7 @@ fi
 # Uploading PCAP Samples to DDoSTarget VM
 # These go into /home/vagrant/PCAP-Samples
 cd "$current_dir/VirtualMachines/DDoSTarget" || { log "Directory not found: DDoSTarget"; INSTALL_STATUS="FAILED"; echo "Installation Status: $INSTALL_STATUS"; exit 1; }
-if ( (vagrant upload "$current_dir/PCAP-Samples" /home/vagrant/PCAP-Samples 2>&1 | tee -a "$LOGFILE") && (vagrant upload "$current_dir/VirtualMachines/DDoSTarget/web/html" /home/vagrant/PCAP-Samples 2>&1 | tee -a "$LOGFILE"); ) then
+if ( (vagrant upload "$current_dir/PCAP-Samples" /home/vagrant/PCAP-Samples 2>&1 | tee -a "$LOGFILE"); ) then
   log "DDoSTarget uploaded PCAP samples successfully."
 else
   log "Failed upload PCAP Samples."
@@ -107,10 +107,22 @@ fi
 # Uploading web content to DDoSTarget VM
 # These go into /var/www/html
 cd "$current_dir/VirtualMachines/DDoSTarget" || { log "Directory not found: DDoSTarget"; INSTALL_STATUS="FAILED"; echo "Installation Status: $INSTALL_STATUS"; exit 1; }
-if ( (vagrant upload "$current_dir/VirtualMachines/DDoSTarget/webcontent" /var/www/html/ 2>&1 | tee -a "$LOGFILE"); ) then
+if ( cd $current_dir/VirtualMachines/DDoSTarget && vagrant upload webcontent /var/www/html 2>&1 | tee -a "$LOGFILE"; ) then
   log "DDoSTarget uploaded web content successfully."
 else
   log "Failed upload web content."
+  INSTALL_STATUS="FAILED"
+  echo "Installation Status: $INSTALL_STATUS"
+  exit 1
+fi
+
+# Uploading scripts to DDoSTarget VM
+# These go into /home/vagrant/bin
+cd "$current_dir/VirtualMachines/DDoSTarget" || { log "Directory not found: DDoSTarget"; INSTALL_STATUS="FAILED"; echo "Installation Status: $INSTALL_STATUS"; exit 1; }
+if ( (cd $current_dir/VirtualMachines/DDoSTarget && vagrant upload TargetScripts /home/vagrant/bin 2>&1 | tee -a "$LOGFILE"); ) then
+  log "DDoSTarget uploaded Target Scripts successfully."
+else
+  log "Failed upload Target Scripts."
   INSTALL_STATUS="FAILED"
   echo "Installation Status: $INSTALL_STATUS"
   exit 1
@@ -120,7 +132,7 @@ fi
 # Establish the speed limit as a group: VBoxManage bandwidthctl "DDoS Target" add NetLimit --type network --limit
 # Apply the limit to the second ethernet adapter: VBoxManage modifyvm "DDoS Target" --nicbandwidthgroup2 NetLimit
 cd "$current_dir/VirtualMachines/DDoSTarget" || { log "Directory not found: DDoSTarget"; INSTALL_STATUS="FAILED"; echo "Installation Status: $INSTALL_STATUS"; exit 1; }
-if ( (vagrant halt 2>&1 | tee -a "$LOGFILE") && (VBoxManage bandwidthctl "DDoS Target" add NetLimit --type network --limit 10m 2>&1 | tee -a "$LOGFILE") && (VBoxManage modifyvm "DDoS Target" --nicbandwidthgroup2 NetLimit 2>&1 | tee -a "$LOGFILE") && (vagrant up 2>&1 | tee -a "$LOGFILE"); ) then
+if ( (vagrant halt 2>&1 | tee -a "$LOGFILE") && (VBoxManage bandwidthctl "DDoS Target" add NetLimit --type network --limit 20m 2>&1 | tee -a "$LOGFILE") && (VBoxManage modifyvm "DDoS Target" --nicbandwidthgroup2 NetLimit 2>&1 | tee -a "$LOGFILE") && (vagrant up 2>&1 | tee -a "$LOGFILE"); ) then
   log "DDoSTarget limited host-only ethernet adapter successfully."
 else
   log "Failed to set limit on DDoSTarget ethernet adapter."

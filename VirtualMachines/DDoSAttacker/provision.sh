@@ -36,7 +36,7 @@ echo "192.168.56.2 target" | sudo tee -a /etc/hosts
 
 #Add a job to cron to make normal traffic
 # Cron expression
-cron="* * * * * /bin/bash /home"
+cron="* * * * * /bin/bash /home/vagrant/bin/traffic-normal-simulated.sh"
     # │ │ │ │ │
     # │ │ │ │ │
     # │ │ │ │ └───── day of week (0 - 6) (0 to 6 are Sunday to Saturday, or use names; 7 is Sunday, the same as 0)
