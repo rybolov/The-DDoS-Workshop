@@ -1,13 +1,12 @@
 TODO.txt: things we gotta fix
 
-TODO: Merge additions in setup.sh to setup.bat: Schneider
-TODO: Test new setup.bat: Schneider
+TODO: Test new setup.bat: Schneider - ** PENDING **
 TODO: Add more attack shell scripts: Smith
 TODO: Add PCAP samples: Smith
 
 Done'ies:
 DONE: Add "normal" traffic generator: Smith
-
+DONE: Merge additions in setup.sh to setup.bat: Schneider 
 
 
 
