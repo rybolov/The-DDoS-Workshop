@@ -64,3 +64,9 @@ eth1 is the "Internet" interface.
 * `tcpdump -i eth1`: Get a stream of packets in the console
 * `tcpdump -i eth1 -w <filename.pcap>`: save a traffic sample to disk.
 * In your browser: http://localhost:8080
+
+# Analyze PCAPs
+There are traffic samples in /PCAP-Samples both inside the git repo and on DDoSTarget
+* DDoSTarget has Wireshark and tcpdump installed on it.
+* `tcpdump -i eth1 -w <filename.pcap>`: save a traffic sample to disk on DDoSTarget and download it to your host machine.
+* You can use Wireshark on your host machine.
