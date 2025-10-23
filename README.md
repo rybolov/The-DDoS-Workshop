@@ -41,6 +41,7 @@ DDoS Target will have a single interface on a host-only adapter as 192.168.56.2.
 
 DDoS Attacker will have a single interface on a host-only adapter as 192.168.56.3 plus aliases on that interface from 192.168.56.4 to 192.168.56.254. This gives us a lot of IP addresses that we can launch attacks from. However, a lot of tools don't allow us to pick a source IP address.
 
+![Lab Layout](./lablayout.jpg)
 
 
 # Launch Some Attacks!!!
@@ -59,14 +60,23 @@ Scripts are in /home/vagrant/bin on the DDoS Attacker
 # Monitor Your Target
 eth1 is the "Internet" interface.
 * `tail -f /var/log/apache2/access.log`: watch web requests come in
-* `nload eth1`: get a top-style "graphical" display of 
+* `sudo iptraf`: get a "graphical" display of network traffic
+* `nload eth1`: get a top-style "graphical" display of network traffic
 * `monitor-curl-single.sh`: Make one HTTP Get to test availability
 * `tcpdump -i eth1`: Get a stream of packets in the console
 * `tcpdump -i eth1 -w <filename.pcap>`: save a traffic sample to disk.
 * In your browser: http://localhost:8080
+
+![Watching a pingflood hit with iptraf](./pingflood.png)
 
 # Analyze PCAPs
 There are traffic samples in /PCAP-Samples both inside the git repo and on DDoSTarget
 * DDoSTarget has Wireshark and tcpdump installed on it.
 * `tcpdump -i eth1 -w <filename.pcap>`: save a traffic sample to disk on DDoSTarget and download it to your host machine.
 * You can use Wireshark on your host machine.
+
+Wireshark filters:  
+* `icmp`
+* `tcp`
+* `tcp.port == 80`
+![Screenshot of Wireshark](./wireshark-screenie.png)
