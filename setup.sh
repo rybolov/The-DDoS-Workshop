@@ -131,15 +131,15 @@ fi
 # Bandwidth limit the DDoS Target
 # Establish the speed limit as a group: VBoxManage bandwidthctl "DDoS Target" add NetLimit --type network --limit
 # Apply the limit to the second ethernet adapter: VBoxManage modifyvm "DDoS Target" --nicbandwidthgroup2 NetLimit
-cd "$current_dir/VirtualMachines/DDoSTarget" || { log "Directory not found: DDoSTarget"; INSTALL_STATUS="FAILED"; echo "Installation Status: $INSTALL_STATUS"; exit 1; }
-if ( (vagrant halt 2>&1 | tee -a "$LOGFILE") && (VBoxManage bandwidthctl "DDoS Target" add NetLimit --type network --limit 20m 2>&1 | tee -a "$LOGFILE") && (VBoxManage modifyvm "DDoS Target" --nicbandwidthgroup2 NetLimit 2>&1 | tee -a "$LOGFILE") && (vagrant up 2>&1 | tee -a "$LOGFILE"); ) then
-  log "DDoSTarget limited host-only ethernet adapter successfully."
-else
-  log "Failed to set limit on DDoSTarget ethernet adapter."
-  INSTALL_STATUS="FAILED"
-  echo "Installation Status: $INSTALL_STATUS"
-  exit 1
-fi
+# cd "$current_dir/VirtualMachines/DDoSTarget" || { log "Directory not found: DDoSTarget"; INSTALL_STATUS="FAILED"; echo "Installation Status: $INSTALL_STATUS"; exit 1; }
+# if ( (vagrant halt 2>&1 | tee -a "$LOGFILE") && (VBoxManage bandwidthctl "DDoS Target" add NetLimit --type network --limit 20m 2>&1 | tee -a "$LOGFILE") && (VBoxManage modifyvm "DDoS Target" --nicbandwidthgroup2 NetLimit 2>&1 | tee -a "$LOGFILE") && (vagrant up 2>&1 | tee -a "$LOGFILE"); ) then
+#  log "DDoSTarget limited host-only ethernet adapter successfully."
+#else
+#  log "Failed to set limit on DDoSTarget ethernet adapter."
+#  INSTALL_STATUS="FAILED"
+#  echo "Installation Status: $INSTALL_STATUS"
+#  exit 1
+#fi
 
 log "==== Installation Complete ===="
 echo "Installation Status: $INSTALL_STATUS"
