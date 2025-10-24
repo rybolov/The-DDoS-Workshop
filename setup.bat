@@ -109,39 +109,39 @@ IF %ERRORLEVEL% NEQ 0 (
 )
 goto :eof
 
-REM ────────────────────────────────────────────────
-:limitBandwidth
-call :log "Applying bandwidth limit to DDoSTarget..."
-vagrant halt >> "%LOGFILE%" 2>&1
-IF %ERRORLEVEL% NEQ 0 (
-    call :log "Failed to halt DDoSTarget."
-    set INSTALL_STATUS=FAILED
-    goto :end
-)
+@REM     REM ────────────────────────────────────────────────
+@REM     :limitBandwidth
+@REM     call :log "Applying bandwidth limit to DDoSTarget..."
+@REM     vagrant halt >> "%LOGFILE%" 2>&1
+@REM     IF %ERRORLEVEL% NEQ 0 (
+@REM         call :log "Failed to halt DDoSTarget."
+@REM         set INSTALL_STATUS=FAILED
+@REM         goto :end
+@REM     )
 
-VBoxManage bandwidthctl "DDoS Target" add NetLimit --type network --limit 20m >> "%LOGFILE%" 2>&1
-IF %ERRORLEVEL% NEQ 0 (
-    call :log "Failed to set bandwidth limit."
-    set INSTALL_STATUS=FAILED
-    goto :end
-)
+@REM     VBoxManage bandwidthctl "DDoS Target" add NetLimit --type network --limit 20m >> "%LOGFILE%" 2>&1
+@REM     IF %ERRORLEVEL% NEQ 0 (
+@REM         call :log "Failed to set bandwidth limit."
+@REM         set INSTALL_STATUS=FAILED
+@REM         goto :end
+@REM     )
 
-VBoxManage modifyvm "DDoS Target" --nicbandwidthgroup2 NetLimit >> "%LOGFILE%" 2>&1
-IF %ERRORLEVEL% NEQ 0 (
-    call :log "Failed to apply bandwidth group to NIC."
-    set INSTALL_STATUS=FAILED
-    goto :end
-)
+@REM     VBoxManage modifyvm "DDoS Target" --nicbandwidthgroup2 NetLimit >> "%LOGFILE%" 2>&1
+@REM     IF %ERRORLEVEL% NEQ 0 (
+@REM         call :log "Failed to apply bandwidth group to NIC."
+@REM         set INSTALL_STATUS=FAILED
+@REM         goto :end
+@REM     )
 
-vagrant up >> "%LOGFILE%" 2>&1
-IF %ERRORLEVEL% NEQ 0 (
-    call :log "Failed to restart DDoSTarget after bandwidth limit."
-    set INSTALL_STATUS=FAILED
-    goto :end
-) ELSE (
-    call :log "DDoSTarget limited host-only ethernet adapter successfully."
-)
-goto :eof
+@REM     vagrant up >> "%LOGFILE%" 2>&1
+@REM     IF %ERRORLEVEL% NEQ 0 (
+@REM         call :log "Failed to restart DDoSTarget after bandwidth limit."
+@REM         set INSTALL_STATUS=FAILED
+@REM         goto :end
+@REM     ) ELSE (
+@REM         call :log "DDoSTarget limited host-only ethernet adapter successfully."
+@REM     )
+@REM # goto :eof
 
 REM ────────────────────────────────────────────────
 :log
