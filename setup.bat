@@ -1,6 +1,6 @@
 @echo off
 setlocal
-set "current_dir=%~dp0"
+set "current_dir=%cd%"
 set "LOGFILE=%current_dir%\install.log"
 set "INSTALL_STATUS=SUCCESS"
 
@@ -108,40 +108,6 @@ IF %ERRORLEVEL% NEQ 0 (
     call :log "DDoSTarget uploaded TargetScripts successfully."
 )
 goto :eof
-
-@REM     REM ────────────────────────────────────────────────
-@REM     :limitBandwidth
-@REM     call :log "Applying bandwidth limit to DDoSTarget..."
-@REM     vagrant halt >> "%LOGFILE%" 2>&1
-@REM     IF %ERRORLEVEL% NEQ 0 (
-@REM         call :log "Failed to halt DDoSTarget."
-@REM         set INSTALL_STATUS=FAILED
-@REM         goto :end
-@REM     )
-
-@REM     VBoxManage bandwidthctl "DDoS Target" add NetLimit --type network --limit 20m >> "%LOGFILE%" 2>&1
-@REM     IF %ERRORLEVEL% NEQ 0 (
-@REM         call :log "Failed to set bandwidth limit."
-@REM         set INSTALL_STATUS=FAILED
-@REM         goto :end
-@REM     )
-
-@REM     VBoxManage modifyvm "DDoS Target" --nicbandwidthgroup2 NetLimit >> "%LOGFILE%" 2>&1
-@REM     IF %ERRORLEVEL% NEQ 0 (
-@REM         call :log "Failed to apply bandwidth group to NIC."
-@REM         set INSTALL_STATUS=FAILED
-@REM         goto :end
-@REM     )
-
-@REM     vagrant up >> "%LOGFILE%" 2>&1
-@REM     IF %ERRORLEVEL% NEQ 0 (
-@REM         call :log "Failed to restart DDoSTarget after bandwidth limit."
-@REM         set INSTALL_STATUS=FAILED
-@REM         goto :end
-@REM     ) ELSE (
-@REM         call :log "DDoSTarget limited host-only ethernet adapter successfully."
-@REM     )
-@REM # goto :eof
 
 REM ────────────────────────────────────────────────
 :log
