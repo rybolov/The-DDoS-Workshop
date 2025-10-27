@@ -3,6 +3,7 @@ setlocal
 set "current_dir=%cd%"
 set "LOGFILE=%current_dir%\install.log"
 set "INSTALL_STATUS=SUCCESS"
+call :log "==== Installation Started ===="
 
 REM Entry point
 call :checkVagrant
@@ -13,6 +14,7 @@ call :setupTarget
 call :limitBandwidth
 
 goto :end
+
 
 REM ────────────────────────────────────────────────
 :checkVagrant
