@@ -16,7 +16,7 @@ sudo apt-get dist-upgrade -y
 sudo apt autoremove
 
 # Install packages
-sudo DEBIAN_FRONTEND=noninteractive apt-get -y install siege wget curl tcpdump fping nmap slowloris
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install siege wget curl tcpdump fping nmap slowloris hping3
 
 # Set up a ton of IP addresses on virtual interfaces
 echo "---

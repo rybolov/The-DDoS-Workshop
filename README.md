@@ -4,16 +4,15 @@ Resources for our DDoS workshop
 ## Setting Up
 
 ### Set up an Environment
-Install VirtualBox https://www.virtualbox.org/
-Install Vagrant https://developer.hashicorp.com/vagrant/docs/installation
+Install VirtualBox https://www.virtualbox.org/  
+Install Vagrant https://developer.hashicorp.com/vagrant/docs/installation  
 
 ### Clone this project
-`git clone https://github.com/rybolov/The-DDoS-Workshop.git`
+`git clone https://github.com/rybolov/The-DDoS-Workshop.git`  
 
 ### Make the Virtual Machines
-
 Linux: From a command line, run `bash ./setup.sh`  
-Windows: From a command line, run `setup.bat`
+Windows: From a command line, run `setup.bat`  
 
 ## Log in to Virtual Machines
 Username: `vagrant` Password:`ddos`  
